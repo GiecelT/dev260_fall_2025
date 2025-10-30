@@ -229,14 +229,17 @@ namespace StackLab
         // TODO: Step 10 - Implement HandleRedo method (Advanced)
         static void HandleRedo()
         {
-            // TODO:
-            // 1. Check if actionHistory has items to redo
-            // 2. If empty, show "nothing to redo" message
-            // 3. If not empty:
-            //    - Pop from actionHistory
-            //    - Push to undoHistory
-            //    - Increment totalOperations
-            //    - Show what was redone
+            if (actionHistory.Count > 0)
+            {
+                string actionToRedo = actionHistory.Pop();
+                undoHistory.Push(actionToRedo);
+                totalOperations++;
+                Console.WriteLine($"✅ Redone '{actionToRedo}' to history.\n");
+            }
+            else
+            {
+                Console.WriteLine("❌ Nothing to redo. Action history is empty.\n");
+            }
         }
 
         // TODO: Step 11 - Implement ShowStatistics method
