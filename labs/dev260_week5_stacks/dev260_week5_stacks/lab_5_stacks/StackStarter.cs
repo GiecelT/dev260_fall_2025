@@ -245,6 +245,20 @@ namespace StackLab
         // TODO: Step 11 - Implement ShowStatistics method
         static void ShowStatistics()
         {
+            Console.WriteLine("📊 Current Session Statistics:");
+            Console.WriteLine($"- Current stack size: {actionHistory.Count}");
+            Console.WriteLine($"- Undo stack size: {undoHistory.Count}");
+            Console.WriteLine($"- Total operations performed: {totalOperations}");
+            Console.WriteLine($"- Stack isEmpty: {(actionHistory.Count == 0 ? "Yes" : "No")}");
+            if (actionHistory.Count > 0)
+            {
+                Console.WriteLine($"- Current top action: '{actionHistory.Peek()}'");
+            }
+            else
+            {
+                Console.WriteLine("- Current top action: N/A");
+            }
+            Console.WriteLine();
             // TODO:
             // Display current session statistics:
             // - Current stack size
@@ -257,13 +271,26 @@ namespace StackLab
         // TODO: Step 12 - Implement ShowSessionSummary method
         static void ShowSessionSummary()
         {
-            // TODO:
-            // Show final summary when exiting:
-            // - Total operations performed
-            // - Final stack size
-            // - List remaining actions (if any)
-            // - Encouraging message
-            // - Wait for keypress before exit
+            Console.WriteLine("\n=== Session Summary ===");
+            Console.WriteLine($"- Total operations performed: {totalOperations}");
+            Console.WriteLine($"- Final stack size: {actionHistory.Count}");
+            if (actionHistory.Count > 0)
+            {
+                Console.WriteLine("- Remaining actions in history:");
+                int position = actionHistory.Count;
+                foreach (string action in actionHistory)
+                {
+                    Console.WriteLine($" {position:D2}. {action}");
+                    position++;
+                }
+            }
+            else
+            {
+                Console.WriteLine("- No remaining actions in history.");
+            }
+            Console.WriteLine("\nThank you for using the Interactive Stack Demo! Keep stacking those actions!\n");
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
         }
     }
 }
