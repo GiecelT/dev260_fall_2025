@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StackLab")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b08e3a60271f77afeb82f0204881af2a45f6316")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d364d90d6441f3f7316b39921a41fb2176a2d0f")]
 [assembly: System.Reflection.AssemblyProductAttribute("StackLab")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StackLab")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

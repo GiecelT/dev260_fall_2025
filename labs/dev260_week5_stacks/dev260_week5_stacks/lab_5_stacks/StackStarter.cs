@@ -213,14 +213,17 @@ namespace StackLab
         // TODO: Step 9 - Implement HandleUndo method (Advanced)
         static void HandleUndo()
         {
-            // TODO:
-            // 1. Check if undoHistory has items to restore
-            // 2. If empty, show "nothing to undo" message
-            // 3. If not empty:
-            //    - Pop from undoHistory
-            //    - Push back to actionHistory
-            //    - Increment totalOperations
-            //    - Show what was restored
+            if (undoHistory.Count > 0)
+            {
+                string restoredAction = undoHistory.Pop();
+                actionHistory.Push(restoredAction);
+                totalOperations++;
+                Console.WriteLine($"✅ Restored '{restoredAction}' to history.\n");
+            }
+            else
+            {
+                Console.WriteLine("❌ Nothing to undo. Undo history is empty.\n");
+            }
         }
 
         // TODO: Step 10 - Implement HandleRedo method (Advanced)
