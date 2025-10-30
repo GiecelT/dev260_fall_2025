@@ -34,7 +34,6 @@ namespace Assignment5
         /// </summary>
         public void VisitUrl(string url, string title)
         {
-            // TODO: Implement navigation logic
             WebPage newPage = new WebPage(url, title);
             if (currentPage != null)
             {
@@ -57,7 +56,6 @@ namespace Assignment5
         /// </summary>
         public bool GoBack()
         {
-            // TODO: Implement back navigation
             if (CanGoBack)
             {
                 forwardStack.Push(currentPage!);
@@ -76,7 +74,6 @@ namespace Assignment5
         /// </summary>
         public bool GoForward()
         {
-            // TODO: Implement forward navigation
             if (CanGoForward)
             {
                 backStack.Push(currentPage!);
@@ -113,12 +110,6 @@ namespace Assignment5
         /// </summary>
         public void DisplayBackHistory()
         {
-            // TODO: Implement back history display
-            // 1. Print header: "📚 Back History (most recent first):"
-            // 2. Check if backStack.Count == 0, if so print "   (No back history)" and return
-            // 3. Use foreach loop with backStack to display pages
-            // 4. Show position number, page title, and URL for each page
-            // 5. Format: "   {position}. {page.Title} ({page.Url})"
             Console.WriteLine("📚 Back History (most recent first):");
             if (backStack.Count == 0)
             {
@@ -149,12 +140,6 @@ namespace Assignment5
         /// </summary>
         public void DisplayForwardHistory()
         {
-            // TODO: Implement forward history display
-            // 1. Print header: "📖 Forward History (next page first):"
-            // 2. Check if forwardStack.Count == 0, if so print "   (No forward history)" and return
-            // 3. Use foreach loop with forwardStack to display pages
-            // 4. Show position number, page title, and URL for each page
-            // 5. Format: "   {position}. {page.Title} ({page.Url})"
             Console.WriteLine("📖 Forward History (next page first):");
             if (forwardStack.Count == 0)
             {
@@ -183,10 +168,6 @@ namespace Assignment5
         /// </summary>
         public void ClearHistory()
         {
-            // TODO: Implement clear history functionality
-            // 1. Calculate total pages: int totalCleared = backStack.Count + forwardStack.Count;
-            // 2. Clear both stacks: backStack.Clear() and forwardStack.Clear()
-            // 3. Print confirmation message with count of cleared pages
             int totalCleared = backStack.Count + forwardStack.Count;
             backStack.Clear();
             forwardStack.Clear();
