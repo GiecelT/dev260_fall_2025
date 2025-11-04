@@ -343,6 +343,22 @@ namespace QueueLab
             //    - Increment ticketCounter and totalOperations
             //    - Show success message with ticket ID and description
             //    - Add note explaining that real systems would jump to front of queue
+            Console.WriteLine("\n🚨 Submit Urgent Ticket");
+            Console.WriteLine("Urgent tickets are processed first!\n");
+            Console.Write("Enter urgent issue description: ");
+            string description = Console.ReadLine()?.Trim() ?? "";
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                Console.WriteLine("❌ Description cannot be empty. Urgent ticket submission cancelled.\n");
+                return;
+            }
+            string ticketId = $"U{ticketCounter:D3}";
+            SupportTicket urgentTicket = new SupportTicket(ticketId, description, "Urgent", "User");
+            ticketQueue.Enqueue(urgentTicket); // Note: real priority queue would insert differently
+            ticketCounter++;
+            totalOperations++;
+            Console.WriteLine($"✅ Urgent Ticket Submitted: {urgentTicket.TicketId} - {urgentTicket.Description}");
+            Console.WriteLine("⚠️ Note: In a real system, this ticket would jump to the front of the queue!\n");
         }
 
         // TODO Step 8: Handle searching for tickets
@@ -364,6 +380,41 @@ namespace QueueLab
             //      - If match found, display position and ticket info, set found flag
             //      - Increment position counter
             //    - After loop, if no matches found, show "No tickets found matching '[searchterm]'"
+            Console.WriteLine("\n🔍 Search Tickets");
+            if (ticketQueue.Count == 0)
+            {
+                Console.WriteLine("❌ Queue is empty. No tickets to search.\n");
+                return;
+            }
+            Console.Write("Enter ticket ID or description keyword: ");
+            string searchTerm = Console.ReadLine()?.Trim() ?? "";
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                Console.WriteLine("❌ Search term cannot be empty. Search cancelled.\n");
+                return;
+            }
+            string lowerSearchTerm = searchTerm.ToLower();
+            bool found = false;
+            int position = 1;
+            Console.WriteLine("\n📋 Search Results:");
+            foreach (var ticket in ticketQueue)
+            {
+                if (ticket.TicketId.ToLower().Contains(lowerSearchTerm) ||
+                    ticket.Description.ToLower().Contains(lowerSearchTerm))
+                {
+                    Console.WriteLine($"{position:D2}. {ticket}");
+                    found = true;
+                }
+                position++;
+            }
+            if (!found)
+            {
+                Console.WriteLine($"❌ No tickets found matching '{searchTerm}'.\n");
+            }
+            else
+            {
+                Console.WriteLine();
+            }
         }
 
         static void HandleQueueStatistics()
