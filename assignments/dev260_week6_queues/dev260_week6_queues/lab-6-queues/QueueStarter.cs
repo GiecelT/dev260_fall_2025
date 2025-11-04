@@ -247,6 +247,16 @@ namespace QueueLab
             //    - Show ticket details using ToDetailedString() method
             //    - Show position information (1 of X in queue)
             // 5. Remember: Peek doesn't modify the queue!
+            Console.WriteLine("\n👀 View Next Ticket");
+            if (ticketQueue.Count == 0)
+            {
+                Console.WriteLine("❌ Queue is empty. No tickets to view.\n");
+                return;
+            }
+            SupportTicket nextTicket = ticketQueue.Peek();
+            Console.WriteLine("✅ Next ticket to be processed:");
+            Console.WriteLine(nextTicket.ToDetailedString());
+            Console.WriteLine($"\nPosition: 1 of {ticketQueue.Count} in the queue.\n");
         }
 
         // TODO Step 5: Handle displaying the full queue
@@ -263,6 +273,21 @@ namespace QueueLab
             //    - Use ToString() method on each ticket for display
             //    - Mark the first ticket with "← Next" to show it's next to be processed
             //    - Increment position counter for each ticket
+            Console.WriteLine("\n📋 Current Support Queue (FIFO Order):");
+            if (ticketQueue.Count == 0)
+            {
+                Console.WriteLine("❌ Queue is empty - no tickets waiting.\n");
+                return;
+            }
+            Console.WriteLine($"Total tickets in queue: {ticketQueue.Count}\n");
+            int position = 1;
+            foreach (var ticket in ticketQueue)
+            {
+                string nextMarker = position == 1 ? " ← Next" : "";
+                Console.WriteLine($"{position:D2}. {ticket}{nextMarker}");
+                position++;
+            }
+            Console.WriteLine();
         }
 
         // TODO Step 6: Handle clearing the queue
@@ -281,6 +306,25 @@ namespace QueueLab
             //      - Increment totalOperations
             //      - Show success message with count of cleared tickets
             //    - If response is anything else, show "Clear operation cancelled"
+            Console.WriteLine("\n🗑️ Clear All Tickets");
+            if (ticketQueue.Count == 0)
+            {
+                Console.WriteLine("❌ Queue is already empty. Nothing to clear.\n");
+                return;
+            }
+            int countToClear = ticketQueue.Count;
+            Console.Write($"⚠️ This will remove {countToClear} tickets. Are you sure? (y/N): ");
+            string? response = Console.ReadLine()?.ToLower() ?? "";
+            if (response == "y" || response == "yes")
+            {
+                ticketQueue.Clear();
+                totalOperations++;
+                Console.WriteLine($"✅ Cleared {countToClear} tickets from the queue.\n");
+            }
+            else
+            {
+                Console.WriteLine("❌ Clear operation cancelled.\n");
+            }
         }
 
         // TODO Step 7: Handle urgent ticket submission (Priority)
