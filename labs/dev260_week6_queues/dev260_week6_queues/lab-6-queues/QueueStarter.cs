@@ -42,14 +42,8 @@ namespace QueueLab
     class Program
     {
         // TODO Step 1: Set up your data structures and tracking variables
-        private static Queue<SupportTicket> ticketQueue = new Queue<SupportTicket>();
-        private static int ticketCounter = 1; // For generating unique ticket IDs
-        private static int totalOperations = 0; // Track total queue operations
-        private static DateTime sessionStart = DateTime.Now; // Track session duration
-
 
         // Pre-defined ticket options for easy selection during demos
-
         private static readonly string[] CommonIssues = {
             "Login issues - cannot access email",
             "Password reset request",
@@ -176,7 +170,7 @@ namespace QueueLab
                 Console.Write("Enter issue description: ");
                 description = Console.ReadLine()?.Trim() ?? "";
             }
-
+            
             // Input validation with multiple options - professional apps handle user choice
             if (string.IsNullOrWhiteSpace(description))
             {
@@ -189,13 +183,6 @@ namespace QueueLab
             // 3. Enqueue the ticket to ticketQueue
             // 4. Increment ticketCounter and totalOperations
             // 5. Show success message with ticket ID, description, and queue position
-            string ticketId = $"T{ticketCounter:D3}";
-            SupportTicket newTicket = new SupportTicket(ticketId, description, "Normal", "User");
-            ticketQueue.Enqueue(newTicket);
-            ticketCounter++;
-            totalOperations++;
-            Console.WriteLine($"✅ Ticket Submitted: {newTicket.TicketId} - {newTicket.Description}");
-            Console.WriteLine($"You are number {ticketQueue.Count} in the queue.\n");
         }
 
         // TODO Step 3: Handle processing tickets (Dequeue)
@@ -213,25 +200,6 @@ namespace QueueLab
             //    - Check if queue still has tickets after dequeue
             //    - If more tickets exist, show next ticket info using Peek()
             //    - If queue is now empty, show "all tickets processed" message
-            Console.WriteLine("\n🔄 Process Next Ticket");
-            if (ticketQueue.Count == 0)
-            {
-                Console.WriteLine("❌ No tickets in queue to process.\n");
-                return;
-            }
-            SupportTicket nextTicket = ticketQueue.Dequeue();
-            totalOperations++;
-            Console.WriteLine("✅ Processing ticket:");
-            Console.WriteLine(nextTicket.ToDetailedString());
-            if (ticketQueue.Count > 0)
-            {
-                SupportTicket upcomingTicket = ticketQueue.Peek();
-                Console.WriteLine($"\n👀 Next ticket in queue: {upcomingTicket.TicketId} - {upcomingTicket.Description}\n");
-            }
-            else
-            {
-                Console.WriteLine("\n🎉 All tickets have been processed!\n");
-            }
         }
 
         // TODO Step 4: Handle peeking at next ticket
