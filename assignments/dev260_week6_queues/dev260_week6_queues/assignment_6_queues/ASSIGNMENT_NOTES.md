@@ -1,6 +1,6 @@
 # Assignment 6: Game Matchmaking System - Implementation Notes
 
-**Name:** [Your Name]
+**Name:** Giecel Tumbaga
 
 ## Multi-Queue Pattern Understanding
 
