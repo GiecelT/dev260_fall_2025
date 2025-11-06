@@ -73,7 +73,7 @@ namespace Week4DoublyLinkedLists.Core
             return Data?.ToString() ?? "null";
         }
     }
-    
+
     /// <summary>
     /// STEP 2: Generic doubly linked list implementation (✅ STRUCTURE COMPLETED)
     /// Supports forward and backward traversal with efficient insertion/deletion
@@ -85,39 +85,39 @@ namespace Week4DoublyLinkedLists.Core
     public class DoublyLinkedList<T> : IEnumerable<T>
     {
         #region Private Fields
-        
+
         private Node<T>? head;     // First node in the list
         private Node<T>? tail;     // Last node in the list
         private int count;         // Number of elements in the list
-        
+
         #endregion
-        
+
         #region Public Properties
-        
+
         /// <summary>
         /// Gets the number of elements in the list
         /// </summary>
         public int Count => count;
-        
+
         /// <summary>
         /// Gets whether the list is empty
         /// </summary>
         public bool IsEmpty => count == 0;
-        
+
         /// <summary>
         /// Gets the first node in the list (readonly)
         /// </summary>
         public Node<T>? First => head;
-        
+
         /// <summary>
         /// Gets the last node in the list (readonly)
         /// </summary>
         public Node<T>? Last => tail;
-        
+
         #endregion
-        
+
         #region Constructor
-        
+
         /// <summary>
         /// Initialize an empty doubly linked list
         /// </summary>
@@ -127,11 +127,11 @@ namespace Week4DoublyLinkedLists.Core
             tail = null;
             count = 0;
         }
-        
+
         #endregion
-        
+
         #region Step 3: Add Methods - TODO: Students implement these step by step
-        
+
         /// <summary>
         /// STEP 3A: Add an item to the beginning of the list
         /// Time Complexity: O(1)
@@ -149,10 +149,22 @@ namespace Week4DoublyLinkedLists.Core
             //    - Update head to new node
             // 4. Increment count
             // 📖 See: https://www.geeksforgeeks.org/dsa/introduction-and-insertion-in-a-doubly-linked-list/#insertion-at-the-beginning-in-doubly-linked-list
-            
-            throw new NotImplementedException("TODO: Step 3a - Implement AddFirst method");
+
+            var newNode = new Node<T>(item);
+            if (head == null)
+            {
+                head = newNode;
+                tail = newNode;
+            }
+            else
+            {
+                newNode.Next = head;
+                head.Previous = newNode;
+                head = newNode;
+            }
+            count++;
         }
-        
+
         /// <summary>
         /// STEP 3B: Add an item to the end of the list
         /// Time Complexity: O(1)
@@ -170,16 +182,28 @@ namespace Week4DoublyLinkedLists.Core
             //    - Update tail to new node
             // 4. Increment count
             // 📖 See: https://www.geeksforgeeks.org/dsa/introduction-and-insertion-in-a-doubly-linked-list/#insertion-at-the-end-in-doubly-linked-list
-            
-            throw new NotImplementedException("TODO: Step 3b - Implement AddLast method");
+
+            var newNode = new Node<T>(item);
+            if (tail == null)
+            {
+                head = newNode;
+                tail = newNode;
+            }
+            else
+            {
+                tail.Next = newNode;
+                newNode.Previous = tail;
+                tail = newNode;
+            }
+            count++;
         }
-        
+
         /// <summary>
         /// Convenience method - calls AddLast
         /// </summary>
         /// <param name="item">Item to add</param>
         public void Add(T item) => AddLast(item);
-        
+
         /// <summary>
         /// STEP 3C: Insert an item at a specific index
         /// Time Complexity: O(n)
@@ -200,14 +224,35 @@ namespace Week4DoublyLinkedLists.Core
             //    - Update pointers: new node's Next/Previous and surrounding nodes
             // 4. Increment count
             // 📖 See: https://www.geeksforgeeks.org/dsa/introduction-and-insertion-in-a-doubly-linked-list/#insertion-after-a-given-node-in-doubly-linked-list
-            
-            throw new NotImplementedException("TODO: Step 3c - Implement Insert method");
+
+            if (index < 0 || index > count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
+            }
+            if (index == 0)
+            {
+                AddFirst(item);
+                return;
+            }
+            if (index == count)
+            {
+                AddLast(item);
+                return;
+            }
+            var newNode = new Node<T>(item);
+            var current = GetNodeAt(index);
+            var previous = current.Previous;
+            previous!.Next = newNode;
+            newNode.Previous = previous;
+            newNode.Next = current;
+            current.Previous = newNode;
+            count++;
         }
-        
+
         #endregion
-        
+
         #region Step 4: Traversal and Display Methods - TODO: Students implement these
-        
+
         /// <summary>
         /// STEP 4A: Display the list in forward direction  
         /// 📚 Reference: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/#forward-traversal
@@ -220,10 +265,25 @@ namespace Week4DoublyLinkedLists.Core
             // 3. Print each node's data with proper formatting
             // 4. Show empty list message if list is empty
             // 📖 See: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/#forward-traversal
-            
-            throw new NotImplementedException("TODO: Step 4a - Implement DisplayForward method");
+
+            var current = head;
+            if (current == null)
+            {
+                Console.WriteLine("List is empty.");
+                return;
+            }
+
+            while (current != null)
+            {
+                Console.Write(current.Data);
+                current = current.Next;
+                if (current != null)
+                {
+                    Console.Write(" <-> ");
+                }
+            }
         }
-        
+
         /// <summary>
         /// STEP 4B: Display the list in backward direction
         /// 📚 Reference: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/#backward-traversal
@@ -237,10 +297,24 @@ namespace Week4DoublyLinkedLists.Core
             // 4. Show empty list message if list is empty
             // This demonstrates the power of doubly linked lists!
             // 📖 See: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/#backward-traversal
-            
-            throw new NotImplementedException("TODO: Step 4b - Implement DisplayBackward method");
+
+            var current = tail;
+            if (current == null)
+            {
+                Console.WriteLine("List is empty.");
+                return;
+            }
+            while (current != null)
+            {
+                Console.Write(current.Data);
+                current = current.Previous;
+                if (current != null)
+                {
+                    Console.Write(" <-> ");
+                }
+            }
         }
-        
+
         /// <summary>
         /// STEP 4C: Convert the list to an array
         /// Time Complexity: O(n)
@@ -254,14 +328,22 @@ namespace Week4DoublyLinkedLists.Core
             // 2. Traverse the list and copy elements to array
             // 3. Return the populated array
             // 📖 See: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/
-            
-            throw new NotImplementedException("TODO: Step 4c - Implement ToArray method");
+
+            T[] array = new T[count];
+            var current = head;
+            int index = 0;
+            while (current != null)
+            {
+                array[index++] = current.Data;
+                current = current.Next;
+            }
+            return array;
         }
-        
+
         #endregion
-        
+
         #region Step 5: Search Methods - TODO: Students implement these
-        
+
         /// <summary>
         /// STEP 5A: Check if the list contains a specific item
         /// Time Complexity: O(n)
@@ -276,10 +358,19 @@ namespace Week4DoublyLinkedLists.Core
             // 2. Compare each node's data with the item
             // 3. Return true if found, false if not found
             // 📖 See: https://www.geeksforgeeks.org/dsa/search-an-element-in-a-doubly-linked-list/
-            
-            throw new NotImplementedException("TODO: Step 5a - Implement Contains method");
+
+            var current = head;
+            while (current != null)
+            {
+                if (EqualityComparer<T>.Default.Equals(current.Data, item))
+                {
+                    return true;
+                }
+                current = current.Next;
+            }
+            return false;
         }
-        
+
         /// <summary>
         /// STEP 5B: Find the first node containing the specified item
         /// Time Complexity: O(n)
@@ -294,10 +385,20 @@ namespace Week4DoublyLinkedLists.Core
             // 2. Compare each node's data with the item
             // 3. Return the node if found, null if not found
             // 📖 See: https://www.geeksforgeeks.org/dsa/search-an-element-in-a-doubly-linked-list/
-            
-            throw new NotImplementedException("TODO: Step 5b - Implement Find method");
+
+            var current = head;
+            while (current != null)
+            {
+                if (EqualityComparer<T>.Default.Equals(current.Data, item))
+                {
+                    return current;
+                }
+                current = current.Next;
+            }
+            return null;
+
         }
-        
+
         /// <summary>
         /// STEP 5C: Find the index of an item
         /// Time Complexity: O(n)
@@ -313,8 +414,19 @@ namespace Week4DoublyLinkedLists.Core
             // 3. Compare each node's data with the item
             // 4. Return index if found, -1 if not found
             // 📖 See: https://www.geeksforgeeks.org/dsa/search-an-element-in-a-doubly-linked-list/
-            
-            throw new NotImplementedException("TODO: Step 5c - Implement IndexOf method");
+
+            var current = head;
+            int index = 0;
+            while (current != null)
+            {
+                if (EqualityComparer<T>.Default.Equals(current.Data, item))
+                {
+                    return index;
+                }
+                current = current.Next;
+                index++;
+            } 
+            return -1;
         }
         
         #endregion
