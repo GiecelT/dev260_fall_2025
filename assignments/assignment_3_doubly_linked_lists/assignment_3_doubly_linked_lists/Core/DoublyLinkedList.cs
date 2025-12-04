@@ -450,8 +450,23 @@ namespace Week4DoublyLinkedLists.Core
             // 6. Decrement count
             // 7. Return the stored data
             // 📖 See: https://www.geeksforgeeks.org/dsa/delete-a-node-in-a-doubly-linked-list/#deletion-at-the-beginning-in-doubly-linked-list
-            
-            throw new NotImplementedException("TODO: Step 6a - Implement RemoveFirst method");
+
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("Cannot remove from an empty list.");
+            }
+            var removedData = head!.Data;
+            head = head.Next;
+            if (head != null)
+            {
+                head.Previous = null;
+            }
+            else
+            {
+                tail = null; // List is now empty
+            }
+            count--;
+            return removedData;
         }
         
         /// <summary>
@@ -472,7 +487,23 @@ namespace Week4DoublyLinkedLists.Core
             // 7. Return the stored data
             // 📖 See: https://www.geeksforgeeks.org/dsa/delete-a-node-in-a-doubly-linked-list/#deletion-at-the-end-in-doubly-linked-list
             
-            throw new NotImplementedException("TODO: Step 6b - Implement RemoveLast method");
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("Cannot remove from an empty list.");
+            }
+            var removedData = tail!.Data;
+            tail = tail.Previous;
+            if (tail != null)
+            {
+                tail.Next = null;
+            } 
+            else
+            {
+                head = null; // List is now empty
+            }
+            count--;
+            return removedData;
+
         }
         
         /// <summary>
@@ -491,7 +522,14 @@ namespace Week4DoublyLinkedLists.Core
             // 4. Return true
             // 📖 See: https://www.geeksforgeeks.org/dsa/delete-a-node-in-a-doubly-linked-list/
             
-            throw new NotImplementedException("TODO: Step 6c - Implement Remove method");
+            var nodeToRemove = Find(item);
+            if (nodeToRemove == null)
+            {
+                return false; 
+            }
+
+            RemoveNode(nodeToRemove);
+            return true;
         }
         
         /// <summary>
@@ -515,7 +553,22 @@ namespace Week4DoublyLinkedLists.Core
             // 4. Return the stored data
             // 📖 See: https://www.geeksforgeeks.org/dsa/delete-a-node-in-a-doubly-linked-list/#deletion-at-a-specific-position-in-doubly-linked-list
             
-            throw new NotImplementedException("TODO: Step 6d - Implement RemoveAt method");
+            if (index < 0 || index >= count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
+            }
+            if (index == 0)
+            {
+                return RemoveFirst(); 
+            }
+            if (index == count - 1)
+            {
+                return RemoveLast(); 
+            }
+            var nodeToRemove = GetNodeAt(index);
+            var removedData = nodeToRemove.Data;
+            RemoveNode(nodeToRemove);
+            return removedData;
         }
         
         #endregion
@@ -535,7 +588,9 @@ namespace Week4DoublyLinkedLists.Core
             // Note: In C#, garbage collection will handle memory cleanup
             // 📖 See: https://docs.microsoft.com/en-us/dotnet/standard/collections/
             
-            throw new NotImplementedException("TODO: Step 7a - Implement Clear method");
+            head = null;
+            tail = null;
+            count = 0;
         }
         
         /// <summary>
@@ -552,7 +607,27 @@ namespace Week4DoublyLinkedLists.Core
             // This is the power of doubly linked lists - easy reversal!
             // 📖 See: https://www.geeksforgeeks.org/dsa/reverse-a-doubly-linked-list/
             
-            throw new NotImplementedException("TODO: Step 7b - Implement Reverse method");
+            if (IsEmpty || count == 1)
+            {
+                return; // No need to reverse
+            }
+            Node<T>? current = head;
+            Node<T>? temp;
+
+            while (current != null)
+            {
+                // Swap Next and Previous
+                temp = current.Previous;
+                current.Previous = current.Next;
+                current.Next = temp;
+                
+                // Move to next node (which is previous before swap)
+                current = current.Previous;
+            }
+            // Swap head and tail
+            temp = head;
+            head = tail;
+            tail = temp;
         }
         
         #endregion
@@ -567,7 +642,7 @@ namespace Week4DoublyLinkedLists.Core
         /// </summary>
         /// <param name="index">Index to get node at (0-based)</param>
         /// <returns>Node at the specified index</returns>
-        private Node<T> GetNodeAt(int index)
+        public Node<T> GetNodeAt(int index)
         {
             // TODO: Helper Method - Implement optimized node retrieval
             // 1. Validate index range (0 to count-1)
@@ -579,7 +654,29 @@ namespace Week4DoublyLinkedLists.Core
             // Hint: This optimization makes operations on large lists more efficient
             // 📖 See: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/
             
-            throw new NotImplementedException("TODO: Helper - Implement GetNodeAt helper method");
+            if (index < 0 || index >= count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
+            }
+            Node<T>? current;
+            if (index < count / 2)
+            {
+                current = head;
+                for (int i = 0; i < index; i++)
+                {
+                    current = current!.Next; 
+                } 
+            }
+            else
+            {
+                current = tail;
+                for (int i = count - 1; i > index; i--)
+                {
+                    current = current!.Previous; 
+                } 
+            }
+            return current!;
+
         }
         
         /// <summary>
@@ -605,7 +702,27 @@ namespace Week4DoublyLinkedLists.Core
             // - Decrement count
             // 📖 See: https://www.geeksforgeeks.org/dsa/delete-a-node-in-a-doubly-linked-list/
             
-            throw new NotImplementedException("TODO: Helper - Implement RemoveNode helper method");
+            if (node == head && node == tail)
+            {
+                head = null;
+                tail = null;
+            }
+            else if (node == head)
+            {
+                head = head!.Next;
+                head!.Previous = null;
+            }
+            else if (node == tail)
+            {
+                tail = tail!.Previous;
+                tail!.Next = null;
+            }
+            else
+            {
+                node.Previous!.Next = node.Next;
+                node.Next!.Previous = node.Previous;
+            }
+            count--;
         }
         
         #endregion
