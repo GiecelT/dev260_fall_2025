@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tenny\\dev260_fall_2025\\final_project\\final_project_starter\\final_project_starter\\src\\src.csproj",
-      "projectName": "src",
-      "projectPath": "C:\\Users\\tenny\\dev260_fall_2025\\final_project\\final_project_starter\\final_project_starter\\src\\src.csproj",
+      "projectUniqueName": "C:\\Users\\tenny\\dev260_fall_2025\\final_project\\final_project_starter\\final_project_starter\\src\\StudyPlanner.csproj",
+      "projectName": "StudyPlanner",
+      "projectPath": "C:\\Users\\tenny\\dev260_fall_2025\\final_project\\final_project_starter\\final_project_starter\\src\\StudyPlanner.csproj",
       "packagesPath": "C:\\Users\\tenny\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\tenny\\dev260_fall_2025\\final_project\\final_project_starter\\final_project_starter\\src\\obj\\",
       "projectStyle": "PackageReference",
