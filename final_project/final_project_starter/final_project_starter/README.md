@@ -313,10 +313,10 @@ Key insights:
 
 ## Submission Checklist
 
-- [✅] Public GitHub repository link submitted
-- [✅] README.md completed (this file)
-- [✅] DESIGN.md completed
-- [✅] Source code included and builds successfully
-- [--] (Optional) Slide deck or 5–10 minute demo video link (unlisted)
+- ✅ Public GitHub repository link submitted
+- ✅ README.md completed (this file)
+- ✅ DESIGN.md completed
+- ✅Source code included and builds successfully
+- N/A (Optional) Slide deck or 5–10 minute demo video link (unlisted)
 
-**Demo Video Link (optional):**
+**Demo Video Link (optional):** N/A
