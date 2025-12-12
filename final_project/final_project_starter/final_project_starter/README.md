@@ -23,9 +23,6 @@ Students often struggle to manage multiple courses with varying deadlines and pr
 ## How to Run
 
 **Requirements:**  
-_List required .NET version, OS requirements, and any dependencies._
-
-**Your Answer:**
 
 - **.NET 9.0** or later
 - **OS**: Windows, macOS, or Linux
@@ -38,9 +35,6 @@ dotnet build
 ```
 
 **Run:**  
-_Provide the command to run your application._
-
-**Your Answer:**
 
 ```bash
 dotnet run --project src/StudyPlanner.csproj
@@ -54,9 +48,6 @@ dotnet run
 ```
 
 **Sample data (if applicable):**  
-_Describe where sample data lives and how to load it (e.g., JSON file path, CSV import)._
-
-**Your Answer:**
 
 Sample data is automatically loaded on startup (see `Program.cs`):
 - **6 sample courses** with descriptions (Data Structures, Web Development, Database Design, Machine Learning, Algorithms, Software Engineering)
@@ -73,9 +64,6 @@ Data is session-only (not persisted to disk). All changes are lost on exit.
 ## Using the App (Quick Start)
 
 **Typical workflow:**  
-_Describe the typical user workflow in 2–4 steps._
-
-**Your Answer:**
 
 1. **View existing courses** → Main Menu → Option 1 (Courses) → Option 1 (List Courses) to see the 6 preloaded sample courses (C1-C6)
 2. **Add a study session** → Main Menu → Option 2 (Study Sessions) → Option 2 (Add Study Session) → Enter title, course ID (e.g., C1), due date (MM-DD-YYYY), priority score, and estimated duration
@@ -83,9 +71,6 @@ _Describe the typical user workflow in 2–4 steps._
 4. **Process today's tasks** → Main Menu → Option 3 (Today's Schedule) → Option 2 (Start Next) to mark the first session as In Progress, then Option 4 (Complete) to finish it
 
 **Input tips:**  
-_Explain case sensitivity, required fields, and how common errors are handled gracefully._
-
-**Your Answer:**
 
 - **Case Sensitivity**: IDs are case-sensitive (use "C1" not "c1"), but the system generates them so this is rarely an issue
 - **Required Fields**: 
@@ -106,9 +91,6 @@ _Explain case sensitivity, required fields, and how common errors are handled gr
 > Full rationale goes in **DESIGN.md**. Here, list only what you used and the feature it powers.
 
 **Data structures used:**  
-_List each data structure and briefly explain what feature it powers._
-
-**Your Answer:**
 
 - `Dictionary<string, TaskItem>` (TaskLookup) → O(1) lookup for edit/delete/complete operations by task ID
 - `Dictionary<string, Course>` (CourseGraph nodes) → O(1) course retrieval for prerequisite checks and display
@@ -122,12 +104,7 @@ _List each data structure and briefly explain what feature it powers._
 
 ## Manual Testing Summary
 
-> No unit tests required. Show how you verified correctness with 3–5 test scenarios.
-
 **Test scenarios:**  
-_Describe each test scenario with steps and expected results._
-
-**Your Answer:**
 
 **Scenario 1: Course Prerequisite Cycle Detection**
 
@@ -181,9 +158,6 @@ _Describe each test scenario with steps and expected results._
 ## Known Limitations
 
 **Limitations and edge cases:**  
-_Describe any edge cases not handled, performance caveats, or known issues._
-
-**Your Answer:**
 
 - **No persistence**: Data is session-only; all courses and tasks are lost on exit (PersistenceService exists but is disabled)
 - **Single-user only**: No multi-user support or concurrent access handling
@@ -197,18 +171,12 @@ _Describe any edge cases not handled, performance caveats, or known issues._
 ## Comparers & String Handling
 
 **Keys comparer:**  
-_Describe what string comparer you used (e.g., StringComparer.OrdinalIgnoreCase) and why._
-
-**Your Answer:**
 
 - **Default string equality** (case-sensitive) for all IDs (C1, T1, etc.)
 - **Justification**: System-generated IDs have guaranteed consistent casing; no user input for keys means no case ambiguity
 - **No custom StringComparer needed**: IDs are controlled (not user-entered), so ordinal comparison is sufficient and performant
 
 **Normalization:**  
-_Explain how you normalize strings (trim whitespace, consistent casing, duplicate checks)._
-
-**Your Answer:**
 
 - **No automatic trimming**: User input for titles/descriptions preserved as-is
 - **Validation instead of normalization**: `InputValidator.GetString()` rejects empty/whitespace-only input with error message
@@ -220,18 +188,12 @@ _Explain how you normalize strings (trim whitespace, consistent casing, duplicat
 ## Credits & AI Disclosure
 
 **Resources:**  
-_List any articles, documentation, or code snippets you referenced or adapted._
-
-**Your Answer:**
 
 - Microsoft .NET Documentation (Dictionary, SortedSet, Queue APIs)
 - C# Language Reference (LINQ, nullable types, expression-bodied members)
 - Graph cycle detection algorithm (standard DFS approach from algorithms textbooks)
 
 **AI usage (if any):**  
-_Describe what you asked AI tools, what code they influenced, and how you verified correctness._
-
-**Your Answer:**
 
 - **GitHub Copilot** used for:
   - Code completion suggestions (method signatures, LINQ queries)
@@ -249,9 +211,6 @@ _Describe what you asked AI tools, what code they influenced, and how you verifi
 ## Challenges and Solutions
 
 **Biggest challenge faced:**  
-_Describe the most difficult part of the project - was it choosing the right data structures, implementing search functionality, handling edge cases, designing the user interface, or understanding a specific algorithm?_
-
-**Your Answer:**
 
 The biggest challenge was implementing **sequential ID renumbering** while maintaining data consistency across multiple collections. When a course or task is deleted, all subsequent items must be renumbered (e.g., deleting C3 means C4→C3, C5→C4), but tasks also reference course IDs. This required:
 1. Tracking insertion order in a List to know which items to renumber
@@ -261,9 +220,6 @@ The biggest challenge was implementing **sequential ID renumbering** while maint
 5. Ensuring SortedSet and Queue remain valid after renumbering
 
 **How you solved it:**  
-_Explain your solution approach and what helped you figure it out - research, consulting documentation, debugging with breakpoints, testing with simple examples, refactoring your design, etc._
-
-**Your Answer:**
 
 Solution approach:
 1. **Designed RemoveCourseAndShift()** to return a mapping of oldId→newId for all renamed courses
@@ -275,9 +231,6 @@ Solution approach:
 This taught me the importance of **maintaining referential integrity** across multiple data structures.
 
 **Most confusing concept:**  
-_What was hardest to understand about data structures, algorithm complexity, key comparers, normalization, or organizing your code architecture?_
-
-**Your Answer:**
 
 Understanding **when to use Dictionary vs SortedSet vs List** for the same collection of tasks was initially confusing. I needed:
 - Fast lookup by ID (Dictionary)
@@ -289,9 +242,6 @@ The confusion was resolved by recognizing these aren't mutually exclusive - stor
 ## Code Quality
 
 **What you're most proud of in your implementation:**  
-_Highlight the best aspect of your code - maybe your data structure choices, clean architecture, efficient algorithms, intuitive user interface, thorough error handling, or elegant solution to a complex problem._
-
-**Your Answer:**
 
 I'm most proud of the **CourseGraph implementation with cycle detection**. It demonstrates:
 - **Proper graph abstraction**: Clean separation of nodes (Dictionary) and edges (adjacency list)
@@ -303,9 +253,6 @@ I'm most proud of the **CourseGraph implementation with cycle detection**. It de
 The code is also well-organized with clear **separation of concerns** (Models, Services, UI, DataStructures, Utils), idiomatic C# (expression-bodied members, LINQ, nullable types), and comprehensive **input validation** with helpful error messages.
 
 **What you would improve if you had more time:**  
-_Identify areas for potential improvement - perhaps adding more features, optimizing performance, improving error handling, adding data persistence, refactoring for better maintainability, or enhancing the user experience._
-
-**Your Answer:**
 
 1. **Better edit UX**: Allow partial field updates (press Enter to keep existing value) instead of requiring full re-entry
 2. **Lazy renumbering**: Only renumber IDs when displaying to user, not immediately on delete (better performance)
@@ -321,9 +268,6 @@ _Identify areas for potential improvement - perhaps adding more features, optimi
 ## Real-World Applications
 
 **How this relates to real-world systems:**  
-_Describe how your implementation connects to actual software systems - e.g., inventory management, customer databases, e-commerce platforms, social networks, task managers, or other applications in the industry._
-
-**Your Answer:**
 
 Study Planner mirrors several real-world systems:
 
@@ -350,9 +294,6 @@ Study Planner mirrors several real-world systems:
 The data structure choices directly map to industry patterns: graphs for dependencies, priority queues for scheduling, hash tables for fast lookups, and queues for workflow management.
 
 **What you learned about data structures and algorithms:**  
-_What insights did you gain about choosing appropriate data structures, performance tradeoffs, Big-O complexity in practice, the importance of good key design, or how data structures enable specific features?_
-
-**Your Answer:**
 
 Key insights:
 
@@ -372,10 +313,10 @@ Key insights:
 
 ## Submission Checklist
 
-- [ ] Public GitHub repository link submitted
-- [ ] README.md completed (this file)
-- [ ] DESIGN.md completed
-- [ ] Source code included and builds successfully
-- [ ] (Optional) Slide deck or 5–10 minute demo video link (unlisted)
+- [✅] Public GitHub repository link submitted
+- [✅] README.md completed (this file)
+- [✅] DESIGN.md completed
+- [✅] Source code included and builds successfully
+- [--] (Optional) Slide deck or 5–10 minute demo video link (unlisted)
 
 **Demo Video Link (optional):**

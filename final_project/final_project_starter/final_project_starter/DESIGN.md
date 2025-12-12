@@ -7,9 +7,6 @@
 ## Data Model & Entities
 
 **Core entities:**  
-_List your main entities with key fields, identifiers, and relationships (1–2 lines each)._
-
-**Your Answer:**
 
 **Entity A:**
 
@@ -26,9 +23,6 @@ _List your main entities with key fields, identifiers, and relationships (1–2 
 - Relationships: Optionally belongs to one Course; stored in multiple collections (priority queue, today's queue, lookup dictionary)
 
 **Identifiers (keys) and why they're chosen:**  
-_Explain your choice of keys (e.g., string Id, composite key, case-insensitive, etc.)._
-
-**Your Answer:**
 
 Sequential string IDs (C1, C2, T1, T2) were chosen for:
 - **User readability**: Easy to reference (e.g., "delete T3" vs "delete a8f2-3b9c-...")
@@ -40,8 +34,6 @@ Sequential string IDs (C1, C2, T1, T2) were chosen for:
 ---
 
 ## Data Structures — Choices & Justification
-
-_List only the meaningful data structures you chose. For each, state the purpose, the role it plays in your app, why it fits, and alternatives considered._
 
 ### Structure #1
 
@@ -104,7 +96,6 @@ Maintains all upcoming tasks in priority order (by due date → priority score �
 - **Priority queue (heap)**: Better for pure dequeue operations, but we need arbitrary removal by ID and full iteration
 - **Custom BST**: More complex to implement; SortedSet provides same functionality with better testing/reliability
 
-**Your Answer:**
 
 **Alternatives considered:**  
 - **List<TaskItem> + manual sorting**: O(n log n) sort on every display; inefficient for frequent updates
@@ -134,9 +125,6 @@ Maintains all upcoming tasks in priority order (by due date → priority score �
 ## Comparers & String Handling
 
 **Comparer choices:**  
-_Explain what comparers you used and why (e.g., StringComparer.OrdinalIgnoreCase for keys)._
-
-**Your Answer:**
 
 **For keys:**
 - String IDs use default string equality (case-sensitive)
@@ -151,9 +139,6 @@ _Explain what comparers you used and why (e.g., StringComparer.OrdinalIgnoreCase
 - Enables SortedSet to automatically maintain task priority without manual sorting
 
 **Normalization rules:**  
-_Describe how you normalize strings (trim whitespace, collapse duplicates, canonicalize casing)._
-
-**Your Answer:**
 
 - **Input validation**: `InputValidator.GetString()` rejects empty/whitespace-only strings
 - **No automatic trimming**: User input accepted as-is to preserve intentional formatting
@@ -161,9 +146,6 @@ _Describe how you normalize strings (trim whitespace, collapse duplicates, canon
 - **ID generation**: System-controlled (C1, T1) - no user input, so no normalization needed
 
 **Bad key examples avoided:**  
-_List examples of bad key choices and why you avoided them (e.g., non-unique names, culture-varying text, trailing spaces, substrings that can change)._
-
-**Your Answer:**
 
 - **Course/Task titles as keys**: ❌ Non-unique (two courses could have same name), mutable (user can edit titles)
 - **GUIDs**: ❌ Not user-friendly ("delete a8f2-3b9c-..." vs "delete T3")
@@ -178,9 +160,6 @@ _List examples of bad key choices and why you avoided them (e.g., non-unique nam
 ## Performance Considerations
 
 **Expected data scale:**  
-_Describe the expected size of your data (e.g., 100 items, 10,000 items)._
-
-**Your Answer:**
 
 - **Courses**: 5-20 courses per semester
 - **Tasks/Study Sessions**: 20-100 active tasks (typical student workload)
@@ -190,9 +169,6 @@ _Describe the expected size of your data (e.g., 100 items, 10,000 items)._
 All operations designed for **small-scale, single-user session data** (not enterprise-scale).
 
 **Performance bottlenecks identified:**  
-_List any potential performance issues and how you addressed them._
-
-**Your Answer:**
 
 1. **Task renumbering on delete**: O(n) to renumber all tasks after deleted ID
    - **Mitigation**: Acceptable for small scale (<100 tasks); user benefits (contiguous IDs) outweigh cost
@@ -207,9 +183,6 @@ _List any potential performance issues and how you addressed them._
    - **Mitigation**: References only, not copies; minimal memory overhead (<1KB per task)
 
 **Big-O analysis of core operations:**  
-_Provide time complexity for your main operations (Add, Search, List, Update, Delete)._
-
-**Your Answer:**
 
 **Courses:**
 - Add: O(1) - Dictionary insert + List append
@@ -235,9 +208,6 @@ _Provide time complexity for your main operations (Add, Search, List, Update, De
 ## Design Tradeoffs & Decisions
 
 **Key design decisions:**  
-_Explain major design choices and why you made them._
-
-**Your Answer:**
 
 1. **Sequential IDs with renumbering** (vs. GUIDs or gaps)
    - **Decision**: Maintain contiguous C1-Cn, T1-Tn even after deletions
@@ -261,9 +231,6 @@ _Explain major design choices and why you made them._
    - **Why**: Automatic ordering in SortedSet; no need to re-sort on every display
 
 **Tradeoffs made:**  
-_Describe any tradeoffs between simplicity vs performance, memory vs speed, etc._
-
-**Your Answer:**
 
 1. **Simplicity vs. Performance**:
    - **Chose simplicity**: O(n) renumbering on delete instead of complex ID management
@@ -282,9 +249,6 @@ _Describe any tradeoffs between simplicity vs performance, memory vs speed, etc.
    - **Tradeoff**: Easier testing/grading, but data lost on exit
 
 **What you would do differently with more time:**  
-_Reflect on what you might change or improve._
-
-**Your Answer:**
 
 1. **Lazy renumbering**: Only renumber IDs when necessary (e.g., on display) instead of immediately on delete
 
