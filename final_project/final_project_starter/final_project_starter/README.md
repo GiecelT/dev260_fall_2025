@@ -29,7 +29,7 @@ Students often struggle to manage multiple courses with varying deadlines and pr
 - **Dependencies**: None (uses standard .NET libraries only)
 
 ```bash
-git clone https://github.com/GiecelT/dev260_fall_2025/tree/week-12-final-project
+git clone <https://github.com/GiecelT/dev260_fall_2025/tree/week-12-final-project>
 cd final_project_starter/final_project_starter
 dotnet build
 ```
