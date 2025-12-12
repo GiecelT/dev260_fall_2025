@@ -1,0 +1,15 @@
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\bin\Debug\net9.0\StudyPlanner.exe
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\bin\Debug\net9.0\StudyPlanner.deps.json
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\bin\Debug\net9.0\StudyPlanner.runtimeconfig.json
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\bin\Debug\net9.0\StudyPlanner.dll
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\bin\Debug\net9.0\StudyPlanner.pdb
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\StudyPlanner.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\StudyPlanner.AssemblyInfoInputs.cache
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\StudyPlanner.AssemblyInfo.cs
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\StudyPlanner.csproj.CoreCompileInputs.cache
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\StudyPlanner.sourcelink.json
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\StudyPlanner.dll
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\refint\StudyPlanner.dll
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\StudyPlanner.pdb
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\StudyPlanner.genruntimeconfig.cache
+C:\Users\tenny\dev260_fall_2025\final_project\final_project_starter\final_project_starter\src\obj\Debug\net9.0\ref\StudyPlanner.dll
