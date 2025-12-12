@@ -53,6 +53,14 @@ namespace StudyPlanner
 
             Console.WriteLine("Sample courses loaded.\n");
 
+            // Add prerequisite relationships to demonstrate the graph structure
+            planner.AddPrerequisite("C5", "C1");  // Algorithms requires Data Structures
+            planner.AddPrerequisite("C4", "C5");  // Machine Learning requires Algorithms
+            planner.AddPrerequisite("C6", "C5");  // Software Engineering requires Algorithms
+            planner.AddPrerequisite("C3", "C1");  // Database Design requires Data Structures
+
+            Console.WriteLine("Course prerequisites configured.\n");
+
             // Show main menu
             menu.ShowMainMenu();
 

@@ -81,6 +81,15 @@ namespace StudyPlanner.Services
 
         public List<Course> ListCourses() => Courses.ListAllCourses();
 
+        public bool AddPrerequisite(string courseId, string prereqId) =>
+            Courses.AddPrerequisite(courseId, prereqId);
+
+        public bool RemovePrerequisite(string courseId, string prereqId) =>
+            Courses.RemovePrerequisite(courseId, prereqId);
+
+        public List<Course> GetPrerequisites(string courseId) =>
+            Courses.GetPrerequisites(courseId);
+
 
         // ---------------------------
         // TASK OPERATIONS

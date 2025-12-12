@@ -51,7 +51,9 @@ namespace StudyPlanner.UI
                     "2️⃣  Add Course",
                     "3️⃣  Update Course",
                     "4️⃣  Delete Course",
-                    "5️⃣  Back"
+                    "5️⃣  View Course Prerequisites",
+                    "6️⃣  Add Course Prerequisite",
+                    "7️⃣  Back"
                 });
                 var choice = InputValidator.GetString("Select: ");
                 switch (choice)
@@ -74,10 +76,9 @@ namespace StudyPlanner.UI
                         Pause();
                         break;
                     case "2":
-                        var id = Utils.IdGenerator.GenerateCourseId();
                         var title = InputValidator.GetString("Title: ");
                         var desc = InputValidator.GetString("Description: ");
-                        _planner.CreateCourse(new Course { Id = id, Title = title, Description = desc });
+                        _planner.CreateCourse(new Course { Title = title, Description = desc });
                         Console.WriteLine("✅ Course added.");
                         Pause();
                         break;
@@ -100,7 +101,76 @@ namespace StudyPlanner.UI
                             Console.WriteLine("❌ Course not found.");
                         Pause();
                         break;
-                    case "5": return;
+                    case "5":
+                        var prereqCourseId = InputValidator.GetString("Course ID to view prerequisites: ");
+                        var course = _planner.GetCourse(prereqCourseId);
+                        if (course == null)
+                        {
+                            Console.WriteLine("❌ Course not found.");
+                        }
+                        else
+                        {
+                            var prerequisites = _planner.GetPrerequisites(prereqCourseId);
+                            PrintBox($"📋 Prerequisites for {course.Title} ({course.Id})");
+                            if (prerequisites.Count == 0)
+                            {
+                                Console.WriteLine("✅ No prerequisites required for this course.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Required to complete before starting this course:");
+                                foreach (var prereq in prerequisites)
+                                {
+                                    Console.WriteLine($"  • {prereq.Id} - {prereq.Title}");
+                                }
+                            }
+                            Console.WriteLine();
+                        }
+                        Pause();
+                        break;
+                    case "6":
+                        var courseIdToAdd = InputValidator.GetString("Course ID to add prerequisite to: ");
+                        var courseToAddPrereq = _planner.GetCourse(courseIdToAdd);
+                        if (courseToAddPrereq == null)
+                        {
+                            Console.WriteLine("❌ Course not found.");
+                            Pause();
+                            break;
+                        }
+
+                        var allCourses = _planner.ListCourses().Where(c => c.Id != courseIdToAdd).ToList();
+                        if (allCourses.Count == 0)
+                        {
+                            Console.WriteLine("❌ No other courses available to set as prerequisites.");
+                            Pause();
+                            break;
+                        }
+
+                        Console.WriteLine($"\nAvailable courses to add as prerequisites for {courseToAddPrereq.Title}:");
+                        foreach (var c in allCourses)
+                        {
+                            Console.WriteLine($"  • {c.Id} - {c.Title}");
+                        }
+
+                        var prereqId = InputValidator.GetString("Prerequisite Course ID: ");
+                        if (string.IsNullOrWhiteSpace(prereqId))
+                        {
+                            Console.WriteLine("❌ Invalid prerequisite ID.");
+                            Pause();
+                            break;
+                        }
+
+                        if (_planner.AddPrerequisite(courseIdToAdd, prereqId))
+                        {
+                            Console.WriteLine($"✅ Prerequisite {prereqId} added to {courseIdToAdd}.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("❌ Failed to add prerequisite. This may create a circular dependency.");
+                        }
+                        Pause();
+                        break;
+                    case "7": return;
                     default: Console.WriteLine("Invalid choice."); break;
                 }
             }
@@ -113,10 +183,10 @@ namespace StudyPlanner.UI
         Console.Clear();
         PrintMenu("📝 Study Sessions", new string[] {
             "1️⃣  List Study Sessions",
-            "2️⃣  Add Study Task",
-            "3️⃣  Edit Study Task",
-            "4️⃣  Delete Study Task",
-            "5️⃣  Schedule Study Task for Today",
+            "2️⃣  Add Study Session",
+            "3️⃣  Edit Study Session",
+            "4️⃣  Delete Study Session",
+            "5️⃣  Schedule Study Session for Today",
             "6️⃣  Back to Main Menu"
         });
 
@@ -127,11 +197,11 @@ namespace StudyPlanner.UI
                 var upcoming = _planner.ListUpcomingTasks();
                 if (upcoming == null || upcoming.Count == 0)
                 {
-                    PrintBox("No upcoming tasks.");
+                    PrintBox("No upcoming study sessions.");
                 }
                 else
                 {
-                    PrintBox("📌 Upcoming Tasks");
+                    PrintBox("📌 Upcoming Study Sessions");
                     foreach (var t in upcoming)
                     {
                         var status = t.InProgress ? "🔄 In Progress" : (t.Completed ? "✅ Completed" : "⏳ Not Started");
@@ -143,7 +213,6 @@ namespace StudyPlanner.UI
                 break;
 
             case "2":
-                var taskId = Utils.IdGenerator.GenerateTaskId();
                 var title = InputValidator.GetString("Title: ");
                 
                 // Validate CourseID against existing courses
@@ -182,7 +251,6 @@ namespace StudyPlanner.UI
 
                 _planner.AddTask(new TaskItem
                 {
-                    Id = taskId,
                     Title = title,
                     CourseId = string.IsNullOrWhiteSpace(courseId) ? null : courseId,
                     DueDate = due,
@@ -191,21 +259,21 @@ namespace StudyPlanner.UI
                     Completed = false
                 });
 
-                Console.WriteLine($"✅ Task {taskId} added: {title}");
+                Console.WriteLine($"✅ Study session added: {title}");
                 Pause();
                 break;
 
             case "3":
-                var editTaskId = InputValidator.GetString("Task ID to edit: ");
+                var editTaskId = InputValidator.GetString("Study Session ID to edit: ");
                 if (!_planner.TaskLookup.ContainsKey(editTaskId))
                 {
-                    Console.WriteLine("❌ Task not found.");
+                    Console.WriteLine("❌ Study session not found.");
                     Pause();
                     break;
                 }
 
                 var taskToEdit = _planner.TaskLookup[editTaskId];
-                Console.WriteLine($"\n📝 Editing Task {editTaskId}: {taskToEdit.Title}");
+                Console.WriteLine($"\n📝 Editing Study Session {editTaskId}: {taskToEdit.Title}");
 
                 var newTitle = InputValidator.GetString($"Title [{taskToEdit.Title}]: ");
                 if (!string.IsNullOrWhiteSpace(newTitle))
@@ -238,23 +306,23 @@ namespace StudyPlanner.UI
                     taskToEdit.EstimatedDuration = new TimeSpan(newDurHours >= 0 ? newDurHours : taskToEdit.EstimatedDuration.Hours, newDurMins >= 0 ? newDurMins : taskToEdit.EstimatedDuration.Minutes, 0);
 
                 _planner.UpdateTask(taskToEdit);
-                Console.WriteLine("✅ Task updated.");
+                Console.WriteLine("✅ Study session updated.");
                 Pause();
                 break;
 
             case "4":
-                var delId = InputValidator.GetString("Task ID to delete: ");
+                var delId = InputValidator.GetString("Study Session ID to delete: ");
                 if (_planner.DeleteTask(delId))
-                    Console.WriteLine("🗑️ Task deleted.");
+                    Console.WriteLine("🗑️ Study session deleted.");
                 else
-                    Console.WriteLine("❌ Could not find task.");
+                    Console.WriteLine("❌ Could not find study session.");
                 Pause();
                 break;
 
             case "5":
-                var schedId = InputValidator.GetString("Task ID to schedule for today: ");
+                var schedId = InputValidator.GetString("Study Session ID to schedule for today: ");
                 _planner.ScheduleForToday(schedId);
-                Console.WriteLine("📅 Task scheduled for today.");
+                Console.WriteLine("📅 Study session scheduled for today.");
                 Pause();
                 break;
 
@@ -275,11 +343,11 @@ namespace StudyPlanner.UI
     while (true)
     {
         Console.Clear();
-        PrintMenu("🕒 Today's Schedule", new string[] {
-            "1️⃣  View Today's Schedule",
-            "2️⃣  Start Next Task",
-            "3️⃣  Move Task on Top",
-            "4️⃣  Complete a Task",
+        PrintMenu("🕒 Today's Study Schedule", new string[] {
+            "1️⃣  View Today's Study Sessions",
+            "2️⃣  Start Next Study Session",
+            "3️⃣  Move Study Session on Top",
+            "4️⃣  Complete a Study Session",
             "5️⃣  Back to Main Menu"
         });
 
@@ -288,10 +356,10 @@ namespace StudyPlanner.UI
         switch (choice)
         {
             case "1":
-                Console.WriteLine("\n📋 Tasks for Today:");
+                Console.WriteLine("\n📋 Study Sessions for Today:");
                 if (_planner.TodaysQueue.Count == 0)
                 {
-                    Console.WriteLine("No tasks scheduled for today.");
+                    Console.WriteLine("No study sessions scheduled for today.");
                 }
                 else
                 {
@@ -307,22 +375,22 @@ namespace StudyPlanner.UI
             case "2":
                 var next = _planner.NextTodayTask();
                 if (next == null)
-                    Console.WriteLine("🎉 No tasks left for today!");
+                    Console.WriteLine("🎉 No study sessions left for today!");
                 else
                 {
                     next.InProgress = true;
-                    Console.WriteLine($"🚀 Starting task: {next.Title}");
+                    Console.WriteLine($"🚀 Starting study session: {next.Title}");
                 }
                 Pause();
                 break;
 
             case "3":
-                var moveTaskId = InputValidator.GetString("Task ID to move on top: ");
+                var moveTaskId = InputValidator.GetString("Study Session ID to move on top: ");
                 var todayList = _planner.TodaysQueue.ToList();
                 var taskToMove = todayList.FirstOrDefault(t => t.Id == moveTaskId);
                 if (taskToMove == null)
                 {
-                    Console.WriteLine("❌ Task not found in today's queue.");
+                    Console.WriteLine("❌ Study session not found in today's queue.");
                 }
                 else
                 {
@@ -330,17 +398,17 @@ namespace StudyPlanner.UI
                     _planner.TodaysQueue.Enqueue(taskToMove);
                     foreach (var t in todayList.Where(t => t.Id != moveTaskId))
                         _planner.TodaysQueue.Enqueue(t);
-                    Console.WriteLine($"⬆️ Task {moveTaskId} moved to top.");
+                    Console.WriteLine($"⬆️ Study session {moveTaskId} moved to top.");
                 }
                 Pause();
                 break;
 
             case "4":
-                var completeTaskId = InputValidator.GetString("Task ID to mark complete: ");
+                var completeTaskId = InputValidator.GetString("Study Session ID to mark complete: ");
                 if (_planner.TaskLookup.ContainsKey(completeTaskId))
                 {
                     _planner.MarkTaskComplete(completeTaskId);
-                    Console.WriteLine("✔️ Task marked complete. Removing from queue in 3 seconds...");
+                    Console.WriteLine("✔️ Study session marked complete. Removing from queue in 3 seconds...");
                     System.Threading.Thread.Sleep(3000);
                     
                     // Remove the completed task from today's queue
@@ -352,7 +420,7 @@ namespace StudyPlanner.UI
                 }
                 else
                 {
-                    Console.WriteLine("❌ Task not found.");
+                    Console.WriteLine("❌ Study session not found.");
                     Pause();
                 }
                 break;
